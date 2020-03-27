@@ -63,16 +63,16 @@ bool AbstractDFA::run(const string &inputWord) {
     }
     return isAccepting();
 }
-void AbstractDFA::manageTransition(int from, char input, int to){
+void AbstractDFA::manageTransition(const int& from, const char& input, int to){
     states[tpair(from, input)] = to;
 }
-void AbstractDFA::setTrap(int id){
+void AbstractDFA::setTrap(const int& id){
     trap_id = id;
 }
 int AbstractDFA::getTrap(){
     return trap_id;
 }
-void AbstractDFA::addFinalState(int id){
+void AbstractDFA::addFinalState(const int& id){
     final_states.push_back(id);
 }
 void AbstractDFA::setFinalStates(const vector<int>& new_final_states){
@@ -112,9 +112,9 @@ WordDFA::WordDFA(const string &word) : AbstractDFA(0) {
     // imposto come stato trappola l'n-esimo + 1 dove n = numero di stati dell'automa
     AbstractDFA::setTrap(word.length()+1);
     // preparo la mappa del DFA passando per ogni lettera dell'alfabeto (dove alfabeto = set(chars(word)))
-    for(char l : word) 
+    for(auto& l : word) 
         // per ogni stato che poi il DFA avrà == length(word)+stato finale e lo stato trappola ( +1 dopo il .length())
-        for(unsigned int i = 0; i<= word.length() + 1; i++)
+        for(unsigned int i = 0; i<= word.length() + 1; ++i)
             // inizializzo per questa coppia (*lettera l dell'alfabeto* + *stato i del DFA*) il valore allo stato trap
             // (poi i percorsi che mi interesseranno li andrò a sovrascrivere)
             AbstractDFA::manageTransition(i, l, AbstractDFA::getTrap());
@@ -157,8 +157,8 @@ CommentDFA::CommentDFA() : AbstractDFA(0) {
     AbstractDFA::setTrap(7);
     // per ogni stato e per ogni lettera dell'alfabeto, creo una transizione a trap_id
     // di cui poi andrò a sovrascrivere solo quelle che mi servono
-    for(int i : {0,1,2,3,4,5,6, AbstractDFA::getTrap()})
-        for(char c : CommentDFA::ALPHABET)
+    for(auto& i : {0,1,2,3,4,5,6, AbstractDFA::getTrap()})
+        for(auto& c : CommentDFA::ALPHABET)
             AbstractDFA::manageTransition(i, c, AbstractDFA::getTrap());
 
     //tutto fino alla biforcazione

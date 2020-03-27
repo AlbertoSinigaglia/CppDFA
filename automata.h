@@ -72,12 +72,12 @@ public:
 		@param to    : stato del DFA dove finisce la transizione
 	**/
 protected:
-	void manageTransition(int from, char input, int to);
+	void manageTransition(const int& from, const char& input, int to);
 	/**
 		imposta l'id della trappola
 		@param id  : id della trappola
 	**/
-	void setTrap(int id);
+	void setTrap(const int& id);
 	/**
 		@return : id della trappola
 	**/
@@ -86,7 +86,7 @@ protected:
 	    Aggiunge id alla lista di stati finali
 		@param id : id dello stato finale
 	**/
-	void addFinalState(int id);
+	void addFinalState(const int& id);
 	/**
 	    Imposta gli stati finali a new_final_states
 		@param new_final_states : vector di stati finali
