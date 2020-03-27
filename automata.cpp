@@ -9,9 +9,7 @@ using namespace std;
  * @param noStates
  *            Number of states in the DFA.
  */
-AbstractDFA::AbstractDFA(int noStates) : current_state(0), trap_id(-1){
-	// TODO: initialize data structures
-}
+AbstractDFA::AbstractDFA(int noStates) : current_state(0), trap_id(-1){}
 
 /**
  * Reset the automaton to the initial state.
@@ -126,7 +124,7 @@ WordDFA::WordDFA(const string &word) : AbstractDFA(0) {
     for(unsigned int i = 0; i < word.length(); ++i)
         AbstractDFA::manageTransition(i, word[i], i+1);
     //come stato finale metto solo l'n-esimo (ultima lettera della mia parola)
-    AbstractDFA::setFinalStates({static_cast<int>(word.length())});
+    AbstractDFA::addFinalState(static_cast<int>(word.length()));
 }
 
 /**
@@ -160,7 +158,7 @@ CommentDFA::CommentDFA() : AbstractDFA(0) {
     // per ogni stato e per ogni lettera dell'alfabeto, creo una transizione a trap_id
     // di cui poi andrò a sovrascrivere solo quelle che mi servono
     for(int i : {0,1,2,3,4,5,6, AbstractDFA::getTrap()})
-        for(char c : ALPHABET)
+        for(char c : CommentDFA::ALPHABET)
             AbstractDFA::manageTransition(i, c, AbstractDFA::getTrap());
 
     //tutto fino alla biforcazione
@@ -171,7 +169,7 @@ CommentDFA::CommentDFA() : AbstractDFA(0) {
     // ramo superiore
     AbstractDFA::manageTransition(2, '*' , 2);
     AbstractDFA::manageTransition(2, '/' , 2);
-    AbstractDFA::manageTransition(2, ANY , 2);
+    AbstractDFA::manageTransition(2, CommentDFA::ANY , 2);
     AbstractDFA::manageTransition(2, '\n', 6);
 
     // stato per i \n finali
@@ -180,9 +178,9 @@ CommentDFA::CommentDFA() : AbstractDFA(0) {
     // ramo inferiore
     AbstractDFA::manageTransition(3, '/'  , 3);
     AbstractDFA::manageTransition(3, '\n' , 3);
-    AbstractDFA::manageTransition(3, ANY  , 3);
+    AbstractDFA::manageTransition(3, CommentDFA::ANY  , 3);
     AbstractDFA::manageTransition(3, '*'  , 4);
-    AbstractDFA::manageTransition(4, ANY  , 3);
+    AbstractDFA::manageTransition(4, CommentDFA::ANY  , 3);
     AbstractDFA::manageTransition(4, '\n' , 3);
     AbstractDFA::manageTransition(4, '*'  , 4);
     AbstractDFA::manageTransition(4, '/'  , 5);
@@ -201,7 +199,7 @@ void CommentDFA::doStep(char letter) {
     AbstractDFA::doStep(
             // se trovo il carattere nel mio alfabeto, uso quel carattere, 
             // altrimenti uso ANY per rappresentarlo
-            std::count(ALPHABET.begin(), ALPHABET.end(), letter) ?
+            std::count(CommentDFA::ALPHABET.begin(), CommentDFA::ALPHABET.end(), letter) ?
                 letter : CommentDFA::ANY
     );
 }
