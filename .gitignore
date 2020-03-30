@@ -1,0 +1,4 @@
+./main
+./main.o
+./automata.o
+./.DS_Store
