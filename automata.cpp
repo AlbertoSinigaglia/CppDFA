@@ -63,24 +63,16 @@ bool AbstractDFA::run(const string &inputWord) {
     }
     return isAccepting();
 }
-void AbstractDFA::manageTransition(const int& from, const char& input, int to){
-    states[tpair(from, input)] = to;
-}
-void AbstractDFA::setTrap(const int& id){
-    trap_id = id;
-}
-int AbstractDFA::getTrap(){
-    return trap_id;
-}
-void AbstractDFA::addFinalState(const int& id){
-    final_states.push_back(id);
-}
-void AbstractDFA::setFinalStates(const vector<int>& new_final_states){
-    final_states = new_final_states;
-}
-vector<int> AbstractDFA::getFinalStates(){
-    return final_states; 
-}
+
+//aggiunge o modifica la transizione da  (FROM, INPUT) a TO
+void AbstractDFA::manageTransition(const int& from, const char& input, int to){ states[tpair(from, input)] = to; }
+
+//getter e setter vari
+void AbstractDFA::setTrap(const int& id){ trap_id = id; }
+int AbstractDFA::getTrap(){ return trap_id; }
+void AbstractDFA::addFinalState(const int& id){ final_states.push_back(id); }
+void AbstractDFA::setFinalStates(const vector<int>& new_final_states){ final_states = new_final_states; }
+vector<int> AbstractDFA::getFinalStates(){ return final_states; }
 
 
 
