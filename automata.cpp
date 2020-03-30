@@ -138,14 +138,14 @@ WordDFA::WordDFA(const string &word) : AbstractDFA(0) {
                         "ANY, /, *"        
                            /   \            
                            \   /            
-                       --> ((2)) -- "\n" ------------------
-                     /                                      \  
-|\                 "/"                                       \      ---              
-| \                /                                          \   /     \           
-|  (0) -- "/" --> (1)                                         ((6))    "\n"      
-| /                \   "ANY, /, \n"        "*"                /   \     /
-|/                 "*"    /   \           /   \             "\n"    ---
-                     \    \   /           \   /             /
+                       -->  (2)  -- "\n" --> ((6))
+                     /                                      
+|\                 "/"                                                
+| \                /                                                
+|  (0) -- "/" --> (1)                                            
+| /                \   "ANY, /, \n"        "*"              
+|/                 "*"    /   \           /   \         
+                     \    \   /           \   /      
                        --> (3) -- "*" -->  (4) -- "/" --> ((5))
                             ^               /
                              \             /
@@ -153,7 +153,7 @@ WordDFA::WordDFA(const string &word) : AbstractDFA(0) {
 */
 CommentDFA::CommentDFA() : AbstractDFA(0) {
     // stati finali del DFA
-    AbstractDFA::setFinalStates({2, 5, 6});
+    AbstractDFA::setFinalStates({5, 6});
     AbstractDFA::setTrap(7);
     // per ogni stato e per ogni lettera dell'alfabeto, creo una transizione a trap_id
     // di cui poi andrò a sovrascrivere solo quelle che mi servono
@@ -172,9 +172,6 @@ CommentDFA::CommentDFA() : AbstractDFA(0) {
     AbstractDFA::manageTransition(2, CommentDFA::ANY , 2);
     AbstractDFA::manageTransition(2, '\n', 6);
 
-    // stato per i \n finali
-    AbstractDFA::manageTransition(6, '\n', 6);
-    
     // ramo inferiore
     AbstractDFA::manageTransition(3, '/'  , 3);
     AbstractDFA::manageTransition(3, '\n' , 3);
@@ -184,7 +181,6 @@ CommentDFA::CommentDFA() : AbstractDFA(0) {
     AbstractDFA::manageTransition(4, '\n' , 3);
     AbstractDFA::manageTransition(4, '*'  , 4);
     AbstractDFA::manageTransition(4, '/'  , 5);
-    AbstractDFA::manageTransition(5, '\n' , 6);
 }
 
 /**
